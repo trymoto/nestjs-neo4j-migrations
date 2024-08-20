@@ -1,0 +1,86 @@
+{
+  "name": "nestjs-neo4j-migrations",
+  "author": "Dmitrii Motovilov <moto.jsx@gmail.com> (http://github.com/trymoto)",
+  "license": "MIT",
+  "version": "0.0.1",
+  "description": "Neo4j migration management for NestJs applications",
+  "main": "dist/index.js",
+  "bin": {
+    "nestjs-neo4j-migrations": "dist/cli.js"
+  },
+  "engines": {
+    "node": ">=18.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trymoto/nestjs-neo4j-migrations.git"
+  },
+  "homepage": "https://github.com/trymoto/nestjs-neo4j-migrations#readme",
+  "bugs": {
+    "url": "https://github.com/trymoto/nestjs-neo4j-migrations/issues"
+  },
+  "keywords": [
+    "neo4j",
+    "nest",
+    "nestjs",
+    "migration"
+  ],
+  "scripts": {
+    "up": "docker-compose up -d",
+    "down": "docker-compose down",
+    "prebuild": "rimraf dist",
+    "build": "tsc -p tsconfig.build.json",
+    "postbuild": "chmod +x dist/cli.js",
+    "test": "jest --detectOpenHandles",
+    "lint": "tsc --noemit && eslint \"{src,spec}/**/*.ts\" --fix"
+  },
+  "devDependencies": {
+    "@nestjs/common": "^10.4.1",
+    "@nestjs/config": "^3.2.3",
+    "@nestjs/core": "^10.4.1",
+    "@nestjs/platform-express": "^10.4.1",
+    "@nestjs/testing": "^10.4.1",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^22.4.0",
+    "@types/supertest": "^6.0.2",
+    "@types/yargs": "^17.0.33",
+    "@typescript-eslint/eslint-plugin": "^8.1.0",
+    "@typescript-eslint/parser": "^8.1.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^5.2.1",
+    "jest": "^29.7.0",
+    "neo4j-driver": "^5.23.0",
+    "prettier": "^3.3.3",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.4",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0",
+    "neo4j-driver": "^4.0.0 || ^5.0.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "ts"
+    ],
+    "rootDir": ".",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.(t|j)s"
+    ],
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node"
+  },
+  "dependencies": {
+    "yargs": "^17.7.2"
+  }
+}
