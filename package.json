@@ -2,7 +2,7 @@
   "name": "nestjs-neo4j-migrations",
   "author": "Dmitrii Motovilov <moto.jsx@gmail.com> (http://github.com/trymoto)",
   "license": "MIT",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Neo4j migration management for NestJs applications",
   "main": "dist/index.js",
   "bin": {

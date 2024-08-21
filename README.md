@@ -92,23 +92,31 @@ export const password = process.env.NEO4J_PASSWORD;
 ### Migration example
 
 Note that key can be any sequential number, but it is recommended to use timestamp for it.
+Make sure your up() and down() methods are idempotent.
+Use `IF NOT EXISTS` and `IF EXISTS` to avoid errors when running migrations multiple times.
+
+Note: session is exposed to allow multi-transactional migrations on large datasets, when memory is a concern.
+In most cases you'll want to use single transaction.
+Learn more here https://neo4j.com/docs/javascript-manual/current/transactions/
 
 ```typescript
-import { Neo4jMigration, Neo4jTransaction } from 'nestjs-neo4j-migrations';
+import { Neo4jMigration, Neo4jSession } from 'nestjs-neo4j-migrations';
 
 export class AddIndex1723704012000 implements Neo4jMigration {
   readonly key = 1723704012000;
 
-  async up(trx: Neo4jTransaction): Promise<void> {
-    await trx.run(
-      `CREATE INDEX ageId IF NOT EXISTS FOR (e:employees) ON (e.age)`,
+  async up(session: Neo4jSession): Promise<void> {
+    await session.executeWrite((trx) =>
+      trx.run(`CREATE INDEX ageId IF NOT EXISTS FOR (e:employees) ON (e.age)`),
     );
 
     // Beware that if you change schema (indexes, constraints, etc) you cannot have data changes in the same migration, you'll have to split them.
   }
 
-  async down(trx: Neo4jTransaction): Promise<void> {
+  async down(session: Neo4jSession): Promise<void> {
+    const trx = session.beginTransaction();
     await trx.run(`DROP INDEX ageId IF EXISTS`);
+    await trx.commit();
   }
 }
 ```
