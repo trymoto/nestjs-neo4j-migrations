@@ -45,9 +45,7 @@ export class Neo4jMigrationService {
         for (const migration of sortedMigrationsToApply) {
           logger?.log(`Applying migration: ${migration.key}`);
 
-          await session.executeWrite(async (trx) => {
-            await migration.up(trx);
-          });
+          await migration.up(session);
 
           await session.executeWrite(async (trx) => {
             await trx.run(

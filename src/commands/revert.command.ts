@@ -45,7 +45,7 @@ export class RevertCommand
     }
 
     const driverInstance = driver(
-      config.url,
+      config.uri,
       auth.basic(config.username, config.password),
     );
 
@@ -83,9 +83,7 @@ export class RevertCommand
 
       this.logger?.log(`Reverting migration: ${migrationToRevert.key}`);
 
-      await session.executeWrite(async (trx) => {
-        await migrationToRevert.down(trx);
-      });
+      await migrationToRevert.down(session);
 
       await session.executeWrite(async (trx) => {
         await trx.run(

@@ -1,11 +1,6 @@
-import { DynamicModule, Module, ModuleMetadata } from '@nestjs/common';
+import { DynamicModule, Logger, Module, ModuleMetadata } from '@nestjs/common';
 
-import {
-  Logger,
-  LoggerToken,
-  Neo4jConfig,
-  Neo4jConfigToken,
-} from './interfaces';
+import { LoggerToken, Neo4jConfig, Neo4jConfigToken } from './interfaces';
 import { Neo4jDriverProvider } from './neo4j-driver.provider';
 
 export interface Neo4jDriverModuleAsyncOptions
@@ -19,7 +14,7 @@ export interface Neo4jDriverModuleAsyncOptions
 
 @Module({})
 export class Neo4jDriverModule {
-  static forRoot(config: Neo4jConfig, logger?: Logger): DynamicModule {
+  static forRoot(config: Neo4jConfig): DynamicModule {
     const configProvider = {
       provide: Neo4jConfigToken,
       useValue: config,
@@ -27,7 +22,7 @@ export class Neo4jDriverModule {
 
     const loggerProvider = {
       provide: LoggerToken,
-      useValue: logger,
+      useValue: new Logger('Neo4jMigrations'),
     };
 
     return {
@@ -38,10 +33,7 @@ export class Neo4jDriverModule {
     };
   }
 
-  static forRootAsync(
-    config: Neo4jDriverModuleAsyncOptions,
-    logger?: Logger,
-  ): DynamicModule {
+  static forRootAsync(config: Neo4jDriverModuleAsyncOptions): DynamicModule {
     const configProvider = {
       provide: Neo4jConfigToken,
       useFactory: config.useFactory,
@@ -50,7 +42,7 @@ export class Neo4jDriverModule {
 
     const loggerProvider = {
       provide: LoggerToken,
-      useValue: logger,
+      useValue: new Logger('Neo4jMigrations'),
     };
 
     return {

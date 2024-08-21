@@ -17,9 +17,57 @@ npm i nestjs-neo4j-migrations
 
 ## Usage
 
+### In static modules
+
+```typescript
+import { Global, Module } from '@nestjs/common';
+import { Neo4jDriverModule } from 'nestjs-neo4j-migrations';
+
+import { migrations } from './migrations';
+
+@Global()
+@Module({
+  imports: [
+    Neo4jDriverModule.forRoot({
+      uri: process.env.NEO4J_URI,
+      username: process.env.NEO4J_USERNAME,
+      password: process.env.NEO4J_PASSWORD,
+      migrations,
+    }),
+  ],
+})
+export class Neo4jModule {}
+```
+
+### In dynamic modules
+
+```typescript
+import { Global, Module } from '@nestjs/common';
+import { Neo4jDriverModule } from 'nestjs-neo4j-migrations';
+
+import { Config } from './config';
+
+import { migrations } from './migrations';
+
+@Module({
+  imports: [
+    Neo4jDriverModule.forRootAsync({
+      inject: [Config],
+      useFactory: (config: Config) => ({
+        uri: config.neo4jUri,
+        username: config.neo4jUser,
+        password: config.neo4jPassword,
+        migrations,
+      }),
+    }),
+  ],
+})
+export class Neo4jModule {}
+```
+
 ### Migrations file
 
-This acts as datasource options file, it should export an array of migrations (see example of one below), url, username and password.
+This acts as datasource options file, it should export an array of migrations (see example of one below), uri, username and password.
 
 ```typescript
 // migrations/index.ts
@@ -36,66 +84,12 @@ export const migrations: Neo4jMigrationList = [
   // ... append more migrations here
 ];
 
-export const url = process.env.NEO4J_URL;
+export const uri = process.env.NEO4J_URI;
 export const username = process.env.NEO4J_USERNAME;
 export const password = process.env.NEO4J_PASSWORD;
 ```
 
-### In static modules
-
-```typescript
-import { Global, Logger, Module } from '@nestjs/common';
-import { Neo4jDriverModule } from 'nestjs-neo4j-migrations';
-
-import { migrations } from './migrations';
-
-@Global()
-@Module({
-  imports: [
-    Neo4jDriverModule.forRoot(
-      {
-        url: process.env.NEO4J_URL,
-        username: process.env.NEO4J_USERNAME,
-        password: process.env.NEO4J_PASSWORD,
-        migrations,
-      },
-      new Logger('Neo4jMigrations'),
-    ),
-  ],
-})
-export class Neo4jModule {}
-```
-
-### In dynamic modules
-
-```typescript
-import { Global, Logger, Module } from '@nestjs/common';
-import { Neo4jDriverModule } from 'nestjs-neo4j-migrations';
-
-import { Config } from './config';
-
-import { migrations } from './migrations';
-
-@Module({
-  imports: [
-    Neo4jDriverModule.forRootAsync(
-      {
-        inject: [Config],
-        useFactory: (config: Config) => ({
-          url: config.neo4jUrl,
-          username: config.neo4jUser,
-          password: config.neo4jPassword,
-          migrations,
-        }),
-      },
-      new Logger('Neo4jMigrations'),
-    ),
-  ],
-})
-export class Neo4jModule {}
-```
-
-## Migration example
+### Migration example
 
 Note that key can be any sequential number, but it is recommended to use timestamp for it.
 

@@ -18,11 +18,11 @@ export const Neo4jDriverProvider: FactoryProvider<Neo4jDriver | null> = {
     config: Neo4jConfig,
     logger: Logger,
   ): Promise<Neo4jDriver | null> => {
-    const { url, username, password, migrations } = config;
-    if (!url) return null;
+    const { uri, username, password, migrations } = config;
+    if (!uri) return null;
 
     const driverInstance = driver(
-      url,
+      uri,
       username && password ? auth.basic(username, password) : undefined,
     );
 

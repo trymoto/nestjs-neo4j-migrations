@@ -1,7 +1,7 @@
 import { Neo4jMigrationList } from './neo4j-migration.interface';
 
 export interface Neo4jConnectionConfig {
-  url: string;
+  uri: string;
   username: string;
   password: string;
   database?: string;
