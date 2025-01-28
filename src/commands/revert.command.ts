@@ -11,7 +11,7 @@ type RevertCommandArgs = {
 };
 
 export class RevertCommand
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  // eslint-disable-next-line
   implements yargs.CommandModule<{}, RevertCommandArgs>
 {
   command = 'revert';

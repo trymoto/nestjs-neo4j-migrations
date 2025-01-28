@@ -7,12 +7,6 @@ import { Logger } from '../interfaces';
 export class LoggerStub implements Logger {
   constructor(private readonly loggerContext?: string) {}
 
-  private formatMessage(level: string, message: any, context?: string): string {
-    const localContext = context || this.loggerContext || '';
-    const timestamp = new Date().toISOString();
-    return `[${timestamp}] ${level.toUpperCase()}${localContext ? ` [${localContext}]` : ''}: ${message}`;
-  }
-
   error(
     message: any,
     stack?: string | undefined,
@@ -69,5 +63,11 @@ export class LoggerStub implements Logger {
     const localContext = context || this.loggerContext || '';
     console.error(this.formatMessage('FATAL', message, localContext as string));
     if (rest.length) console.error(...rest);
+  }
+
+  private formatMessage(level: string, message: any, context?: string): string {
+    const localContext = context || this.loggerContext || '';
+    const timestamp = new Date().toISOString();
+    return `[${timestamp}] ${level.toUpperCase()}${localContext ? ` [${localContext}]` : ''}: ${message}`;
   }
 }
