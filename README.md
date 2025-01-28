@@ -9,6 +9,10 @@ This package is inspired by TypeORM style of migration management. It tracks mig
 - CLI for reverting is lacking but functional
 - No generation of migrations yet
 
+## Shoutouts
+
+- A lot of infrastructure for this package is based on excellent [nest-nsq-transport](https://github.com/iamolegga/nest-nsq-transport) package by [Oleg Repin](https://github.com/iamolegga)
+
 ## Installation
 
 ```bash
