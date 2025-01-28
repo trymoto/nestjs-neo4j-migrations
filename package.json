@@ -43,8 +43,9 @@
     "postbuild": "chmod +x dist/cli.js"
   },
   "devDependencies": {
-    "@nestjs/common": "^10.4.1",
-    "@nestjs/core": "^10.4.1",
+    "@nestjs/common": "^11.0.6",
+    "@nestjs/core": "^11.0.6",
+    "@nestjs/microservices": "^11.0.6",
     "@testcontainers/neo4j": "^10.17.2",
     "@types/jest": "^29.5.12",
     "@types/node": "^22.4.0",
