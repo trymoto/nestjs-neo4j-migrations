@@ -1,19 +1,20 @@
 import { INestMicroservice, Module } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { Neo4jContainer, StartedNeo4jContainer } from '@testcontainers/neo4j';
+
 import {
   Neo4jDriverModule,
   Neo4jDriverToken,
   Neo4jMigrationList,
 } from '../src';
-import { NestFactory } from '@nestjs/core';
 
 export class TestCase {
-  public static defaultTimeout = 30000;
-  public app!: INestMicroservice;
-  public container!: StartedNeo4jContainer;
-  constructor(public readonly migrations: Neo4jMigrationList) {}
+  static defaultTimeout = 30000;
+  app!: INestMicroservice;
+  container!: StartedNeo4jContainer;
+  constructor(readonly migrations: Neo4jMigrationList) {}
 
-  public async beforeAll() {
+  async beforeAll() {
     this.container = await new Neo4jContainer().start();
 
     @Module({
@@ -35,11 +36,12 @@ export class TestCase {
     try {
       await this.app.init();
     } catch (err) {
+      console.error(err);
       return;
     }
   }
 
-  public async afterAll() {
+  async afterAll() {
     const module = this.app.get(Neo4jDriverToken);
     await this.app.close();
     await this.container.stop();

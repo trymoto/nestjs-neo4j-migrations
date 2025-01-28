@@ -9,7 +9,6 @@ jobs:
       fail-fast: false
       matrix:
         nestjs-version:
-          - '8'
           - '9'
           - '10'
           - '11'
@@ -17,8 +16,6 @@ jobs:
           - 20
           - 22
         include:
-          - nestjs-version: 8
-            typescript-version: 4
           - nestjs-version: 9
             typescript-version: 4
           - nestjs-version: 10
@@ -39,6 +36,7 @@ jobs:
       - run: |
           npm i @nestjs/core@${{ matrix.nestjs-version }} \
                 @nestjs/common@${{ matrix.nestjs-version }} \
+                @nestjs/microservices@${{ matrix.nestjs-version }} \
                 @types/node@${{ matrix.nodejs-version }} \
                 typescript@${{ matrix.typescript-version }} \
                 -D

@@ -6,6 +6,7 @@ import { RevertCommand } from './commands';
 import { LoggerStub } from './utils';
 
 void yargs
+  // eslint-disable-next-line
   .usage('Usage: $0 <command> [options]')
   .command(new RevertCommand(new LoggerStub('RevertCommand')))
   .recommendCommands()

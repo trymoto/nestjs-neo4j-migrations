@@ -4,6 +4,7 @@ import {
   Neo4jMigration,
   Neo4jSession,
 } from '../src';
+
 import { TestCase } from './test-case';
 
 class SampleMigration implements Neo4jMigration {
